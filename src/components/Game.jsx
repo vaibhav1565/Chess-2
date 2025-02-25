@@ -4,6 +4,7 @@ import { Chess } from "chess.js";
 import { DEFAULT_POSITION } from "chess.js";
 import { Chessboard } from "react-chessboard";
 import { MOVE, ASSIGN_COLOR, DISCONNECT } from "../utils/messages";
+import { useSelector } from "react-redux";
 
 const pgn = [
   '[Event "Casual Game"]',
@@ -149,7 +150,7 @@ const Game = () => {
     setGameOutcome(message);
   }
 
-  // console.log(chessState);
+  const user = useSelector((state) => state.user);
   return (
     <div className="h-screen flex gap-10 items-center justify-center">
       <div>
@@ -165,6 +166,13 @@ const Game = () => {
           {gameOutcome && (
             <div className="absolute z-1 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-black text-white h-[520px] w-1/2 flex items-center justify-between">
               <p className="w-full text-center">{gameOutcome}</p>
+            </div>
+          )}
+          {user && (
+            <div className="flex items-start">
+              <img src={user.photoURL} />
+              <span>{user.displayName}</span>
+              <span>&#9823;</span>
             </div>
           )}
           <Chessboard
@@ -189,6 +197,13 @@ const Game = () => {
               backgroundColor: "#edeed1",
             }}
           />
+          {user && (
+            <div className="flex items-start">
+              <img src={user.photoURL} />
+              <span>{user.displayName}</span>
+              <span>{playerColor === 'w' ? "♙" : "♟"}</span>
+            </div>
+          )}
         </div>
         <p>Total moves: {history.length}</p>
       </div>
